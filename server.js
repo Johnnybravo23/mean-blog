@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const path = require('path');
 
 
 // connecting the users file
@@ -21,6 +22,11 @@ mongoose
     .connect(db)
     .then(() => console.log('MongoDB Connected!'))
     .catch(err => console.log(err));
+
+app.use(express.static(__dirname + '/client/dist/client'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + 'client/dist/client/index.html'));
+});
 
 // passport middleware
 app.use(passport.initialize());
